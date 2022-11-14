@@ -58,26 +58,27 @@ test('each player gets their turn', (t) => {
 	)
 
 	const game = new Game({numberOfPlayers: 2, deck })
-
 	game.start()
-	game.progress()
 
+	game.progress()
 	assert.deepStrictEqual(game.players[0].cards, [2, 1, 1, 3])
+
+	game.progress()
+	assert.deepStrictEqual(game.players[1].cards, [2, 1, 1, 3])
 });
 
-test('each player gets their turn', (t) => {
+test('put cards go to the bottom of the deck', (t) => {
 	const deck = new Deck(
 		[
-			3, 3,
-			2, 1, 1, 1,
-			2, 1, 1, 1,
+			2, 2, 2, 2,
+			1, 1, 1, 1,
 		]
 	)
 
-	const game = new Game({numberOfPlayers: 2, deck })
+	const game = new Game({numberOfPlayers: 1, deck })
 
 	game.start()
 	game.progress()
 
-	assert.deepStrictEqual(game.players[0].cards, [2, 1, 1, 3])
+	assert.deepStrictEqual(game.deck.cards, [1, 2, 2, 2])
 });

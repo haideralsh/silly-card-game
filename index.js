@@ -25,28 +25,34 @@ export class Game {
 	}
 
 	progress() {
-		if (this.winner) return
+		if (this.isGameOver) return
 
 		this.check()
 
-		this.player.put()
-		this.player.draw(this.draw())
+		let card = this.player.put()
+		this.deck.put(card)
+
+		this.player.draw(this.deck.draw())
 
 		this.check()
 
 		this.turn++
 	}
 
+	run() {
+
+	}
+
 	check() {
 		if (this.player.won()) this.gameOver()
 	}
 
-	draw() {
-		return this.deck.draw()
-	}
-
 	gameOver() {
 		this.winner = this.player
+	}
+
+	get isGameOver() {
+		return Boolean(this.winner)
 	}
 
 	get player() {
@@ -73,19 +79,24 @@ export class Player {
 }
 
 export class Deck {
-	constructor(availableToDraw = [...numbersDeck, ...unoNumbersDeck]) {
-		this.availableToDraw = availableToDraw
+	constructor(cards = [...numbersDeck, ...unoNumbersDeck]) {
+		this.cards = cards
 	}
 
 	draw(count = 1) {
 		const index = count * -1
 
-		let drawn = this.availableToDraw.splice(index)
+		let drawn = this.cards.splice(index)
 
 		return drawn.length > 1 ? drawn : drawn[0]
 	}
 
-	reset() {
-		this.availableToDraw = [...numbersDeck, ...unoNumbersDeck]
+	put(card) {
+		this.cards.unshift(card)
 	}
+
+	reset() {
+		this.cards = [...numbersDeck, ...unoNumbersDeck]
+	}
+
 }
